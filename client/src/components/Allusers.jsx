@@ -1,4 +1,6 @@
 import {
+  Button,
+  styled,
   Table,
   TableBody,
   TableCell,
@@ -8,7 +10,26 @@ import {
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { getUser } from "../services/api";
+import { Link } from "react-router-dom";
+import { getUsers } from "../services/api";
+
+const StyledTable = styled(Table)({
+  width: "90%",
+  margin: "50px auto 0 auto",
+});
+
+const Thead = styled(TableRow)`
+  background: #000000;
+  & > th {
+    color: #fff;
+    font-size: 20px;
+  }
+`;
+const Tbody = styled(TableRow)`
+  & > td {
+    font-size: 20px;
+  }
+`;
 
 const Allusers = () => {
   const [users, setUsers] = useState([]);
@@ -18,34 +39,46 @@ const Allusers = () => {
   }, []);
 
   const getAllUsers = async () => {
-    let response = await getUser();
+    let response = await getUsers();
     console.log(response);
     setUsers(response.data);
   };
 
   return (
-    <Table>
+    <StyledTable>
       <TableHead>
-        <TableRow>
+        <Thead>
           <TableCell>Id</TableCell>
           <TableCell>Name</TableCell>
           <TableCell>Username</TableCell>
           <TableCell>Email</TableCell>
           <TableCell>Phone</TableCell>
-        </TableRow>
+          <TableCell></TableCell>
+        </Thead>
       </TableHead>
       <TableBody>
         {users.map((user) => (
-          <TableRow>
+          <Tbody>
             <TableCell>{user._id}</TableCell>
             <TableCell>{user.name}</TableCell>
             <TableCell>{user.username}</TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.phone}</TableCell>
-          </TableRow>
+            <Button
+              variant="contained"
+              style={{ marginRight: 10 }}
+              component={Link}
+              to={`/edit/${user._id}`}
+            >
+              Edit
+            </Button>
+            <Button variant="contained" color="secondary">
+              Delete
+            </Button>
+          </Tbody>
         ))}
       </TableBody>
-    </Table>
+    </StyledTable>
   );
 };
 
