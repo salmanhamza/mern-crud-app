@@ -37,6 +37,7 @@ const Edituser = () => {
 
   const loadUserDetails = async () => {
     const response = await getUser(id);
+    setUser(response.data);
   };
 
   const [user, setUser] = useState(defaultValue);
@@ -55,7 +56,11 @@ const Edituser = () => {
       <Typography variant="h4">Edit User</Typography>
       <FormControl>
         <InputLabel>Name</InputLabel>
-        <Input onChange={(e) => onValueChage(e)} name="name" />
+        <Input
+          onChange={(e) => onValueChage(e)}
+          name="name"
+          value={user.name}
+        />
       </FormControl>
       <FormControl>
         <InputLabel>Username</InputLabel>
