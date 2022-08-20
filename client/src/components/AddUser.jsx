@@ -32,7 +32,6 @@ const AddUser = () => {
   const [user, setUser] = useState(defaultValue);
   const onValueChage = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
-    console.log(user);
   };
 
   const AddUserDetails = async () => {

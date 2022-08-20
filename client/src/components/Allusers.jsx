@@ -11,7 +11,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getUsers } from "../services/api";
+import { getUsers, deleteUser } from "../services/api";
 
 const StyledTable = styled(Table)({
   width: "90%",
@@ -40,8 +40,13 @@ const Allusers = () => {
 
   const getAllUsers = async () => {
     let response = await getUsers();
-    console.log(response);
+
     setUsers(response.data);
+  };
+
+  const deleteUserDetails = async (id) => {
+    await deleteUser(id);
+    getAllUsers();
   };
 
   return (
@@ -58,23 +63,29 @@ const Allusers = () => {
       </TableHead>
       <TableBody>
         {users.map((user) => (
-          <Tbody>
+          <Tbody key={user._id}>
             <TableCell>{user._id}</TableCell>
             <TableCell>{user.name}</TableCell>
             <TableCell>{user.username}</TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.phone}</TableCell>
-            <Button
-              variant="contained"
-              style={{ marginRight: 10 }}
-              component={Link}
-              to={`/edit/${user._id}`}
-            >
-              Edit
-            </Button>
-            <Button variant="contained" color="secondary">
-              Delete
-            </Button>
+            <TableCell>
+              <Button
+                variant="contained"
+                style={{ marginRight: 10 }}
+                component={Link}
+                to={`/edit/${user._id}`}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => deleteUserDetails(user._id)}
+              >
+                Delete
+              </Button>
+            </TableCell>
           </Tbody>
         ))}
       </TableBody>
